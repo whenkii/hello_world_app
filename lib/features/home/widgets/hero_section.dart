@@ -29,7 +29,7 @@ class HeroSection extends StatelessWidget {
       decoration: BoxDecoration(
         // Add the background image
         image: DecorationImage(
-          image: AssetImage('images/temple.jpg'), // Ensure this path is correct and image is in pubspec.yaml
+          image: AssetImage('temple.jpg'), // Ensure this path is correct and image is in pubspec.yaml
           fit: BoxFit.cover, // Cover the entire area
         ),
         // Apply a gradient overlay to potentially darken the background slightly
