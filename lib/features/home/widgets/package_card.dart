@@ -1,74 +1,88 @@
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart'; // Import Google Fonts
 import '../../../core/models/taxi_package.dart';
 
 class PackageCard extends StatelessWidget {
   final TaxiPackage package;
-  // Define a fixed width for the card when used in the horizontal list
   final double? width;
+  final VoidCallback? onSelect;
 
-  const PackageCard({Key? key, required this.package, this.width}) : super(key: key);
+  const PackageCard({
+    Key? key,
+    required this.package,
+    this.width,
+    this.onSelect,
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    return SizedBox( // Use SizedBox to enforce width if provided
+    // Define a custom saffron color (you can adjust this Hex code)
+    const Color saffronColor = Color(0xFFFFA500); // A vibrant orange/saffron
+    const Color lightSaffronColor = Color(0xFFFFD700); // A lighter goldenrod/saffron
+
+    return SizedBox(
       width: width,
       child: Card(
-        elevation: 4,
+        elevation: 4, // Increased elevation for a more pronounced look
         shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(15),
+          borderRadius: BorderRadius.circular(15), // More rounded corners
         ),
         clipBehavior: Clip.antiAlias,
+        color: Colors.white, // Pure white background for contrast
         child: Padding(
-          padding: const EdgeInsets.all(12.0), // Slightly reduced padding
+          padding: const EdgeInsets.all(20.0), // Increased padding
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
-            mainAxisAlignment: MainAxisAlignment.spaceBetween, // Space out content vertically
             children: [
+              // Package Name (Styled - Light Saffron Header)
               Text(
                 package.name,
-                style: Theme.of(context).textTheme.titleLarge?.copyWith(
+                style: GoogleFonts.poppins(
+                  fontSize: 22, // Larger header font size
                   fontWeight: FontWeight.bold,
-                  fontSize: 16, // Slightly smaller title
+                  color: lightSaffronColor, // Light saffron color for the header
                 ),
-                maxLines: 1,
+                maxLines: 2,
                 overflow: TextOverflow.ellipsis,
               ),
-              Text(
-                package.description,
-                style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                  color: Colors.black54,
-                  fontSize: 13, // Smaller description text
+              SizedBox(height: 16), // Increased space
+
+              // Package Description (Styled - Slightly bolder)
+              Expanded(
+                child: SingleChildScrollView(
+                  child: Text(
+                    package.description,
+                    style: GoogleFonts.openSans(
+                      fontSize: 15, // Slightly larger description text
+                      height: 1.6, // Increased line height
+                      color: Colors.black87, // Darker color for better contrast
+                      fontWeight: FontWeight.w500, // Slightly bolder
+                    ),
+                  ),
                 ),
-                maxLines: 2, // Limit to 2 lines
-                overflow: TextOverflow.ellipsis,
               ),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                crossAxisAlignment: CrossAxisAlignment.center,
-                children: [
-                  Text(
-                    // Handle custom package price display
-                    package.price > 0 ? '₹${package.price.toStringAsFixed(0)}' : 'Custom',
-                    style: TextStyle(
-                      fontWeight: FontWeight.bold,
-                      fontSize: 16, // Slightly smaller price
-                      color: Theme.of(context).primaryColor,
+              SizedBox(height: 20), // Increased space
+
+              // Select Button (Styled - Saffron)
+              Align(
+                alignment: Alignment.bottomRight,
+                child: ElevatedButton(
+                  onPressed: onSelect, // This still calls the onSelect (WhatsApp launch) function
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: saffronColor, // Saffron color for the button background
+                    foregroundColor: Colors.white, // White text color
+                    padding: EdgeInsets.symmetric(horizontal: 24, vertical: 12), // Larger button padding
+                    textStyle: GoogleFonts.poppins( // Use Poppins for button text
+                      fontSize: 16,
+                      fontWeight: FontWeight.w600, // Semi-bold button text
                     ),
-                  ),
-                  ElevatedButton(
-                    onPressed: () {
-                       print("Select Package Tapped: ${package.name}");
-                       ScaffoldMessenger.of(context).showSnackBar(
-                         SnackBar(content: Text('Selected package: ${package.name}')),
-                       );
-                    },
-                    style: ElevatedButton.styleFrom(
-                      padding: EdgeInsets.symmetric(horizontal: 12, vertical: 6), // Smaller button padding
-                      textStyle: TextStyle(fontSize: 12), // Smaller button text
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(10), // Rounded button corners
                     ),
-                    child: Text('Select'),
+                    elevation: 5, // Button elevation
                   ),
-                ],
+                  child: const Text('Select'), // Changed button text back to "Select"
+                ),
               ),
             ],
           ),
